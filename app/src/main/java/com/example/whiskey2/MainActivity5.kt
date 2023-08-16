@@ -111,54 +111,56 @@ class MainActivity5 : ComponentActivity() {
             var enteredTastingNote by remember { mutableStateOf("") }
             var imageUriString by remember { mutableStateOf<String?>(null) }
 
-                    Row(
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                if (selectedUri == null) {
+                    Button(
+
+                        onClick = {
+                            launcher.launch("image/*")
+                        },
                         modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        if (selectedUri == null) {
-                            Button(
-                                onClick = {
-                                    launcher.launch("image/*")
-                                },
-                                modifier = Modifier
-                                    .size(150.dp)
-                                    .clip(RectangleShape)
-                            ) {
-                                Text(
-                                    text = "+",
-                                    fontSize = 100.sp,
-                                )
-                            }
-                        }
+                            .size(100.dp)
+                            .clip(RectangleShape),
 
-                        selectedUri?.let { uri ->
-                            val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                ImageDecoder.decodeBitmap(
-                                    ImageDecoder.createSource(
-                                        context.contentResolver,
-                                        uri
-                                    )
-                                )
-                            } else {
-                                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-                            }
-
-                            Image(
-                                bitmap = bitmap.asImageBitmap(),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(width = 200.dp, height = 200.dp)
-                                    .clickable {
-                                        launcher.launch("image/*")
-                                    },
-                                contentScale = ContentScale.Crop
-                            )
-                            imageUriString = uri.toString()
-                        }
-
+                        ) {
+                        Text(
+                            text = "+",
+                            fontSize = 50.sp,
+                        )
                     }
+                }
+
+                selectedUri?.let { uri ->
+                    val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        ImageDecoder.decodeBitmap(
+                            ImageDecoder.createSource(
+                                context.contentResolver,
+                                uri
+                            )
+                        )
+                    } else {
+                        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                    }
+
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(width = 200.dp, height = 200.dp)
+                            .clickable {
+                                launcher.launch("image/*")
+                            },
+                        contentScale = ContentScale.Crop
+                    )
+                    imageUriString = uri.toString()
+                }
+
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
             val db = remember {
@@ -240,3 +242,5 @@ class MainActivity5 : ComponentActivity() {
         }
     }
 }
+//ROW로 버튼 감싸서 취소키 (뒤로가기) , 저장 버튼 만들기 배경은 투명으로만들고
+// + 대체할 이미지나 배경 투명으로 만들기

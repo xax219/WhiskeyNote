@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.whiskey2.ui.theme.Whiskey2Theme
@@ -51,13 +52,14 @@ fun TopBar() {
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .background(Color(android.graphics.Color.parseColor("#946038"))),
+            .background(Color(android.graphics.Color.parseColor("#1EA4FF"))),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Whiskey",
             color = Color.White,
             textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(8.dp)
         )
     }
