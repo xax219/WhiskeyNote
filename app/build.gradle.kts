@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.whiskey2"
-        minSdk = 26
+        minSdk = 28
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -72,6 +72,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
 
     val room_version = "2.5.0"
     implementation("androidx.room:room-runtime:$room_version")

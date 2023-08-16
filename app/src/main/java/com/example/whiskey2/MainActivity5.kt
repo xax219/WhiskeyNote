@@ -1,5 +1,7 @@
 package com.example.whiskey2
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -11,6 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +46,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -86,11 +90,14 @@ class MainActivity5 : ComponentActivity() {
             var selectedUri by remember {
                 mutableStateOf<Uri?>(null)
             }
+            val context = LocalContext.current
 
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.GetContent()
             ) { uri ->
                 selectedUri = uri
+                val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(uri!!, takeFlags)
             }
             var whiskyName by remember { mutableStateOf(TextFieldValue()) }
             var enteredName by remember { mutableStateOf("") }
@@ -104,59 +111,56 @@ class MainActivity5 : ComponentActivity() {
             var enteredTastingNote by remember { mutableStateOf("") }
             var imageUriString by remember { mutableStateOf<String?>(null) }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                selectedUri?.let { uri ->
-                    val context = LocalContext.current
-                    val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        ImageDecoder.decodeBitmap(
-                            ImageDecoder.createSource(
-                                context.contentResolver,
-                                uri
-                            )
-                        )
-                    } else {
-                        MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
-                    }
-
-                    Image(
-                        bitmap = bitmap.asImageBitmap(),
-                        contentDescription = "",
+                    Row(
                         modifier = Modifier
-                            .size(width = 200.dp, height = 200.dp)
-                            .clickable {
-                                launcher.launch("image/*")
-                            }
-                    )
-                    imageUriString = uri.toString()
-                }
-
-
-                if (selectedUri == null) {
-                    Button(
-                        onClick = {
-                            launcher.launch("image/*")
-                        },
-                        modifier = Modifier
-                            .size(150.dp)
-                            .clip(RectangleShape)
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
                     ) {
-                        Text(
-                            text = "+",
-                            fontSize = 100.sp,
-                        )
-                    }
-                }
-            }
+                        if (selectedUri == null) {
+                            Button(
+                                onClick = {
+                                    launcher.launch("image/*")
+                                },
+                                modifier = Modifier
+                                    .size(150.dp)
+                                    .clip(RectangleShape)
+                            ) {
+                                Text(
+                                    text = "+",
+                                    fontSize = 100.sp,
+                                )
+                            }
+                        }
 
+                        selectedUri?.let { uri ->
+                            val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                ImageDecoder.decodeBitmap(
+                                    ImageDecoder.createSource(
+                                        context.contentResolver,
+                                        uri
+                                    )
+                                )
+                            } else {
+                                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                            }
+
+                            Image(
+                                bitmap = bitmap.asImageBitmap(),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(width = 200.dp, height = 200.dp)
+                                    .clickable {
+                                        launcher.launch("image/*")
+                                    },
+                                contentScale = ContentScale.Crop
+                            )
+                            imageUriString = uri.toString()
+                        }
+
+                    }
 
             Spacer(modifier = Modifier.height(8.dp))
-            val context = LocalContext.current
             val db = remember {
                 AppDatabase.getDatabase(context)
             }
