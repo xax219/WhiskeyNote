@@ -1,5 +1,6 @@
 package com.example.whiskey2
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -7,9 +8,12 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -60,6 +64,7 @@ fun SingleMaltList(singleMaltList: List<SingleMalt>, db: AppDatabase) {
         }
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
@@ -82,6 +87,19 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
         var editedYear by remember { mutableStateOf(singleMalt.year.toString()) }
         var editedLocation by remember { mutableStateOf(singleMalt.location) }
         var editedTastingNote by remember { mutableStateOf(singleMalt.tastingNote) }
+        var selectedUri by remember {
+            mutableStateOf<Uri?>(null)
+        }
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri ->
+            selectedUri = uri
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            context.contentResolver.takePersistableUriPermission(uri!!, takeFlags)
+            scope.launch(Dispatchers.IO) {
+                db.singleMaltDAO().updateSingleMalt(singleMalt.copy(imageUri = uri.toString()))
+            }
+        }
 
         Column(
             modifier = Modifier.padding(16.dp)
@@ -106,7 +124,13 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
 
                     val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true)
 
-                    Image(bitmap = scaledBitmap.asImageBitmap(), contentDescription = "")
+                    Image(
+                        bitmap = scaledBitmap.asImageBitmap(),
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
+                            launcher.launch("image/*")
+                        },
+                    )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(

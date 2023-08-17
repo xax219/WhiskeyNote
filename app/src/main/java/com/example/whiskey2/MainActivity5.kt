@@ -261,14 +261,7 @@ fun DropDownMenu() {
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("") }
     val list = listOf("Single Malt", "Blended", "Bourbon")
-    var textFiledSize by remember {
-        mutableStateOf(Size.Zero)
-    }
-    val icon = if (expanded) {
-        Icons.Filled.KeyboardArrowUp
-    } else {
-        Icons.Filled.KeyboardArrowUp
-    }
+
     Column(modifier = Modifier.padding(20.dp)) {
 
 
