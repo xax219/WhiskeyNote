@@ -25,10 +25,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -60,7 +63,6 @@ import com.example.whiskey2.data.SingleMalt
 import com.example.whiskey2.ui.theme.Whiskey2Theme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 class MainActivity5 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -233,6 +235,9 @@ class MainActivity5 : ComponentActivity() {
                         scope.launch(Dispatchers.IO) {
                             db.singleMaltDAO().insertAll(newSingleMalt)
                         }
+
+                        val intent = Intent(context, MainActivity::class.java)
+                        startActivity(intent)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -243,6 +248,7 @@ class MainActivity5 : ComponentActivity() {
                         fontSize = 24.sp,
                     )
                 }
+
             }
 
         }
@@ -265,38 +271,43 @@ fun DropDownMenu() {
     }
     Column(modifier = Modifier.padding(20.dp)) {
 
-        OutlinedTextField(value = selectedItem,
-            onValueChange = { selectedItem = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { coordinates ->
-                    textFiledSize = coordinates.size.toSize()
-                },
-            label = { Text(text = "Select Whisky") },
-            trailingIcon = {
-                Icon(icon, "", Modifier.clickable { expanded = !expanded })
-            }
-        )
 
-        DropdownMenu(
+        ExposedDropdownMenuBox(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .width(with(LocalDensity.current) { textFiledSize.width.toDp() })
+            onExpandedChange = { expanded = !expanded }
         ) {
-            list.forEach { label ->
-                DropdownMenuItem(text = {
-                            Text(text = label)             
-                },
-                    onClick = {
-                        selectedItem = label
-                        expanded = false
-                    })
+            OutlinedTextField(
+                readOnly = true,
+                value = selectedItem,
+                onValueChange = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor(),
+                label = { Text(text = "Select Whisky") },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                }
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                list.forEach { label ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = label)
+                        },
+                        onClick = {
+                            selectedItem = label
+                            expanded = false
+                        },
+                    )
+                }
             }
+
         }
     }
 }
-
 
 //ROW로 버튼 감싸서 취소키 (뒤로가기) , 저장 버튼 만들기 배경은 투명으로만들고
 // + 대체할 이미지나 배경 투명으로 만들기
