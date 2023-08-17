@@ -7,10 +7,10 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-//[User::class, ] 여기서 , 로 나누기
-@Database(entities = [User::class], version = 1 )
+//[User::class, ] 여기서 , 로 나눠서 받음
+@Database(entities = [SingleMalt::class], version = 1 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDAO
+    abstract fun singleMaltDAO(): SingleMaltDAO
 
     companion object {
         @Volatile
@@ -21,20 +21,22 @@ abstract class AppDatabase : RoomDatabase() {
                 Room.databaseBuilder(
                     context,
                     AppDatabase::class.java, "contacts.db"
-                ).addMigrations(MIGRATION_0_1).build()
+                ).addMigrations(
+//                    MIGRATION_0_1
+                ).build()
             }
         }
 
     }
 }
 
-val MIGRATION_0_1 = object : Migration(0,1) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE User ADD COLUMN name TEXT")
-        database.execSQL("ALTER TABLE User ADD COLUMN location TEXT")
-        database.execSQL("ALTER TABLE User ADD COLUMN tastingNote TEXT")
-        database.execSQL("ALTER TABLE User ADD COLUMN year INTEGER")
-        database.execSQL("ALTER TABLE User ADD COLUMN price INTEGER")
-        database.execSQL("ALTER TABLE User ADD COLUMN imageUri TEXT")
-    }
-}
+//val MIGRATION_0_1 = object : Migration(0,1) {
+//    override fun migrate(database: SupportSQLiteDatabase) {
+//        database.execSQL("ALTER TABLE User ADD COLUMN name TEXT")
+//        database.execSQL("ALTER TABLE User ADD COLUMN location TEXT")
+//        database.execSQL("ALTER TABLE User ADD COLUMN tastingNote TEXT")
+//        database.execSQL("ALTER TABLE User ADD COLUMN year INTEGER")
+//        database.execSQL("ALTER TABLE User ADD COLUMN price INTEGER")
+//        database.execSQL("ALTER TABLE User ADD COLUMN imageUri TEXT")
+//    }
+//}

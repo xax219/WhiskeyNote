@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.whiskey2.data.AppDatabase
-import com.example.whiskey2.data.User
+import com.example.whiskey2.data.SingleMalt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -37,33 +37,32 @@ class MainActivity2 : ComponentActivity() {
             val db = remember {
                 AppDatabase.getDatabase(context)
             }
-            val userList by db.userDao().getAll().collectAsState(initial = emptyList())
+            val singleMaltList by db.singleMaltDAO().getAll().collectAsState(initial = emptyList())
 
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Single()
-                UserList(userList = userList, db = db)
+                SingleMaltList(singleMaltList = singleMaltList, db = db)
             }
         }
     }
 }
 
 @Composable
-fun UserList(userList: List<User>, db: AppDatabase) {
+fun SingleMaltList(singleMaltList: List<SingleMalt>, db: AppDatabase) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(userList) { user ->
-            UserCard(user = user, db = db)
+        items(singleMaltList) { singleMalt ->
+            SingleMaltCard(singleMalt = singleMalt, db = db)
         }
     }
 }
-//수정 , 삭제 키 아래 만들고 비율 조정하기
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserCard(user: User, db: AppDatabase) {
+fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val cardColors = CardDefaults.cardColors(
@@ -76,8 +75,14 @@ fun UserCard(user: User, db: AppDatabase) {
             .fillMaxWidth(),
         colors = cardColors,
         shape = squareShape
-
     ) {
+        var isEditing by remember { mutableStateOf(false) }
+        var editedName by remember { mutableStateOf(singleMalt.name) }
+        var editedPrice by remember { mutableStateOf(singleMalt.price?.toString() ?: "") }
+        var editedYear by remember { mutableStateOf(singleMalt.year.toString()) }
+        var editedLocation by remember { mutableStateOf(singleMalt.location) }
+        var editedTastingNote by remember { mutableStateOf(singleMalt.tastingNote) }
+
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -86,7 +91,7 @@ fun UserCard(user: User, db: AppDatabase) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                user.imageUri?.let { imageUriString ->
+                singleMalt.imageUri?.let { imageUriString ->
                     val imageUri = Uri.parse(imageUriString)
                     val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         ImageDecoder.decodeBitmap(
@@ -104,31 +109,113 @@ fun UserCard(user: User, db: AppDatabase) {
                     Image(bitmap = scaledBitmap.asImageBitmap(), contentDescription = "")
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Column {
-                    Text(text = "Whisky Name: ${user.name}")
-                    Text(text = "Price: ${user.price}")
-                    Text(text = "Year: ${user.year}")
-                    Text(text = "Location: ${user.location}")
-                    Text(text = "Tasting Note: ${user.tastingNote}")
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    if (isEditing) {
+                        TextField(
+                            value = editedName,
+                            onValueChange = { editedName = it },
+                            label = { Text("Whisky Name") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
+                        TextField(
+                            value = editedPrice,
+                            onValueChange = { editedPrice = it },
+                            label = { Text("Price") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
+                        TextField(
+                            value = editedYear,
+                            onValueChange = { editedYear = it },
+                            label = { Text("Year") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
+                        TextField(
+                            value = editedLocation,
+                            onValueChange = { editedLocation = it },
+                            label = { Text("Location") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
+                        TextField(
+                            value = editedTastingNote,
+                            onValueChange = { editedTastingNote = it },
+                            label = { Text("Tasting Note") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                        )
+                    } else {
+                        Text(text = "Whisky Name: ${if (editedName.isEmpty()) singleMalt.name else editedName}")
+                        Text(text = "Price: ${if (editedPrice.isEmpty()) singleMalt.price else editedPrice}")
+                        Text(text = "Year: ${if (editedYear.isEmpty()) singleMalt.year else editedYear}")
+                        Text(text = "Location: ${if (editedLocation.isEmpty()) singleMalt.location else editedLocation}")
+                        Text(text = "Tasting Note: ${if (editedTastingNote.isEmpty()) singleMalt.tastingNote else editedTastingNote}")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = {
+                        if (isEditing) {
+                            scope.launch(Dispatchers.IO) {
+                                val editedSingleMalt = singleMalt.copy(
+                                    name = editedName,
+                                    price = editedPrice.toIntOrNull(),
+                                    year = editedYear.toIntOrNull() ?: 0,
+                                    location = editedLocation,
+                                    tastingNote = editedTastingNote
+                                )
+                                db.singleMaltDAO().updateSingleMalt(editedSingleMalt)
+                            }
+                        }
+                        isEditing = !isEditing
+                    },
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .width(IntrinsicSize.Max),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+                ) {
+                    if (isEditing) {
+                        Text(text = "Save", color = MaterialTheme.colorScheme.onPrimary)
+                    } else {
+                        Text(text = "Edit", color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                }
+
+
+                Button(
+                    onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            db.singleMaltDAO().delete(singleMalt)
+                        }
+                    },
+                    modifier = Modifier.padding(4.dp),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(text = "Delete", color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }
-
-        Button(
-            onClick = {
-                scope.launch(Dispatchers.IO) {
-                    db.userDao().delete(user)
-                }
-            },
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
-        ) {
-            Text(text = "Delete", color = MaterialTheme.colorScheme.onPrimary)
-        }
     }
 }
+
 
 @Composable
 fun Single() {
