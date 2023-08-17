@@ -11,8 +11,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -145,7 +147,9 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
                             label = { Text("Whisky Name") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.CenterHorizontally),
+//                                .border(BorderStroke(width = 1.dp, color = Color.Black)), //텍스트 필드 테두리 변경
+                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent) // 텍스트 필드 색상 변경
                         )
                         TextField(
                             value = editedPrice,
@@ -153,31 +157,44 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
                             label = { Text("Price") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.CenterHorizontally),
+                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                         )
+
                         TextField(
                             value = editedYear,
                             onValueChange = { editedYear = it },
                             label = { Text("Year") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.CenterHorizontally),
+                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                         )
+
                         TextField(
                             value = editedLocation,
                             onValueChange = { editedLocation = it },
                             label = { Text("Location") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.CenterHorizontally),
+                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                         )
+
                         TextField(
                             value = editedTastingNote,
                             onValueChange = { editedTastingNote = it },
                             label = { Text("Tasting Note") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.CenterHorizontally),
+                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,unfocusedIndicatorColor = Color.Transparent
+                            )
+
                         )
                     } else {
                         Text(text = "Whisky Name: ${if (editedName.isEmpty()) singleMalt.name else editedName}")
@@ -214,7 +231,7 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
                     modifier = Modifier
                         .padding(4.dp)
                         .width(IntrinsicSize.Max),
-                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
                 ) {
                     if (isEditing) {
                         Text(text = "Save", color = MaterialTheme.colorScheme.onPrimary)
@@ -231,7 +248,7 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
                         }
                     },
                     modifier = Modifier.padding(4.dp),
-                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
                 ) {
                     Text(text = "Delete", color = MaterialTheme.colorScheme.onPrimary)
                 }
