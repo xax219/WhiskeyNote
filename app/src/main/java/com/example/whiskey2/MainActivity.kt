@@ -79,7 +79,6 @@ fun ButtonRow() {
         NavigationButton("Bourbon", MainActivity4::class.java, context)
         NavigationButton("write", MainActivity5::class.java, context)
 
-
     }
 }
 

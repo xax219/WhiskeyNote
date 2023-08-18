@@ -8,10 +8,11 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 //[User::class, ] 여기서 , 로 나눠서 받음
-@Database(entities = [SingleMalt::class], version = 1 )
+@Database(entities = [SingleMalt::class, Blended::class,Bourbon::class], version = 1 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun singleMaltDAO(): SingleMaltDAO
-
+    abstract fun blendedDAO(): BlendedDAO
+    abstract fun bourbonDAO(): BourbonDAO
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -29,14 +30,3 @@ abstract class AppDatabase : RoomDatabase() {
 
     }
 }
-
-//val MIGRATION_0_1 = object : Migration(0,1) {
-//    override fun migrate(database: SupportSQLiteDatabase) {
-//        database.execSQL("ALTER TABLE User ADD COLUMN name TEXT")
-//        database.execSQL("ALTER TABLE User ADD COLUMN location TEXT")
-//        database.execSQL("ALTER TABLE User ADD COLUMN tastingNote TEXT")
-//        database.execSQL("ALTER TABLE User ADD COLUMN year INTEGER")
-//        database.execSQL("ALTER TABLE User ADD COLUMN price INTEGER")
-//        database.execSQL("ALTER TABLE User ADD COLUMN imageUri TEXT")
-//    }
-//}

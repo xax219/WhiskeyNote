@@ -12,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +40,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,17 +51,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.whiskey2.data.AppDatabase
+import com.example.whiskey2.data.Blended
+import com.example.whiskey2.data.Bourbon
 import com.example.whiskey2.data.SingleMalt
 import com.example.whiskey2.ui.theme.Whiskey2Theme
 import kotlinx.coroutines.Dispatchers
@@ -68,9 +75,7 @@ class MainActivity5 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Whiskey2Theme {
-                MainScreen()
-            }
+            MainScreen()
         }
     }
 
@@ -78,7 +83,6 @@ class MainActivity5 : ComponentActivity() {
     fun MainScreen() {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
         ) {
             Save()
         }
@@ -88,7 +92,9 @@ class MainActivity5 : ComponentActivity() {
     @Composable
     fun Save(modifier: Modifier = Modifier) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
@@ -102,7 +108,9 @@ class MainActivity5 : ComponentActivity() {
             ) { uri ->
                 selectedUri = uri
                 val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                context.contentResolver.takePersistableUriPermission(uri!!, takeFlags)
+                if (uri != null) {
+                    context.contentResolver.takePersistableUriPermission(uri, takeFlags)
+                }
             }
             var whiskyName by remember { mutableStateOf(TextFieldValue()) }
             var enteredName by remember { mutableStateOf("") }
@@ -123,24 +131,17 @@ class MainActivity5 : ComponentActivity() {
                 horizontalArrangement = Arrangement.Center,
             ) {
                 if (selectedUri == null) {
-                    Button(
-
-                        onClick = {
-                            launcher.launch("image/*")
-                        },
+                    Image(
+                        painter = painterResource(id = R.drawable.camera),
+                        contentDescription = "cameraImage",
                         modifier = Modifier
                             .size(100.dp)
-                            .clip(RectangleShape),
-
-                        ) {
-                        Text(
-                            text = "+",
-                            fontSize = 50.sp,
-                        )
-                    }
-
+                            .clickable {
+                                launcher.launch("image/*")
+                            }
+                            .padding(16.dp),
+                    )
                 }
-
                 selectedUri?.let { uri ->
                     val bitmap: Bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         ImageDecoder.decodeBitmap(
@@ -168,7 +169,7 @@ class MainActivity5 : ComponentActivity() {
 
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+
             val db = remember {
                 AppDatabase.getDatabase(context)
             }
@@ -177,43 +178,55 @@ class MainActivity5 : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+//                    .padding(16.dp)
             ) {
-                DropDownMenu()
+                //TODO read
+                var selectedItem by remember { mutableStateOf("") }
+                DropDownMenu(selectedItem, onChangeItem = { selectedItem = it })
 
                 TextField(
                     value = whiskyName,
                     onValueChange = { whiskyName = it },
                     label = { Text("Whisky Name") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = price,
                     onValueChange = { price = it },
                     label = { Text("Price") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = year,
                     onValueChange = { year = it },
                     label = { Text("Year") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = location,
                     onValueChange = { location = it },
                     label = { Text("Location") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = tastingNote,
                     onValueChange = { tastingNote = it },
                     label = { Text("Tasting Note") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
@@ -223,6 +236,7 @@ class MainActivity5 : ComponentActivity() {
                         enteredYear = year.text
                         enteredLocation = location.text
                         enteredTastingNote = tastingNote.text
+// newblended 만들고 조건문으로 사용해서  조건 충족할때 저장
 
                         var newSingleMalt = SingleMalt(
                             name = enteredName,
@@ -232,8 +246,30 @@ class MainActivity5 : ComponentActivity() {
                             tastingNote = enteredTastingNote,
                             imageUri = imageUriString
                         )
+                        var newBlended = Blended(
+                            name = enteredName,
+                            price = enteredPrice.toInt(),
+                            year = enteredYear.toInt(),
+                            location = enteredLocation,
+                            tastingNote = enteredTastingNote,
+                            imageUri = imageUriString
+                        )
+                        var newBourbon = Bourbon(
+                            name = enteredName,
+                            price = enteredPrice.toInt(),
+                            year = enteredYear.toInt(),
+                            location = enteredLocation,
+                            tastingNote = enteredTastingNote,
+                            imageUri = imageUriString
+                        )
                         scope.launch(Dispatchers.IO) {
-                            db.singleMaltDAO().insertAll(newSingleMalt)
+                            if (selectedItem == "Single Malt") {
+                                db.singleMaltDAO().insertAll(newSingleMalt)
+                            } else if (selectedItem == "Blended") {
+                                db.blendedDAO().insertAll(newBlended)
+                            } else if (selectedItem == "Bourbon") {
+                                db.bourbonDAO().insertAll(newBourbon)
+                            }
                         }
 
                         val intent = Intent(context, MainActivity::class.java)
@@ -241,10 +277,12 @@ class MainActivity5 : ComponentActivity() {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RectangleShape)
+                        .clip(RectangleShape),
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+
                 ) {
                     Text(
-                        text = "저장",
+                        text = "Save",
                         fontSize = 24.sp,
                     )
                 }
@@ -257,14 +295,11 @@ class MainActivity5 : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownMenu() {
+fun DropDownMenu(selectedItem: String, onChangeItem: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf("") }
     val list = listOf("Single Malt", "Blended", "Bourbon")
 
     Column(modifier = Modifier.padding(20.dp)) {
-
-
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded }
@@ -291,7 +326,8 @@ fun DropDownMenu() {
                             Text(text = label)
                         },
                         onClick = {
-                            selectedItem = label
+                            //TODO read
+                            onChangeItem(label)
                             expanded = false
                         },
                     )

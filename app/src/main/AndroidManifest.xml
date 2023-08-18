@@ -21,7 +21,7 @@
         <activity
             android:name=".MainActivity5"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity4"
             android:exported="false" />
