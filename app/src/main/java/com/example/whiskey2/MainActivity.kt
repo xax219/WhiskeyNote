@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,13 +16,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -45,7 +50,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun TopBar() {
     Box(
@@ -55,13 +59,22 @@ fun TopBar() {
             .background(Color(android.graphics.Color.parseColor("#1EA4FF"))),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Whiskey",
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(8.dp)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Whiskey",
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 170.dp)
+            )
+            WriteButton(LocalContext.current)
+        }
     }
 }
 
@@ -77,8 +90,6 @@ fun ButtonRow() {
         NavigationButton("SingleMalt", MainActivity2::class.java, context)
         NavigationButton("Blended", MainActivity3::class.java, context)
         NavigationButton("Bourbon", MainActivity4::class.java, context)
-        NavigationButton("write", MainActivity5::class.java, context)
-
     }
 }
 
@@ -89,5 +100,21 @@ fun NavigationButton(label: String, destination: Class<*>, context: Context) {
         context.startActivity(intent)
     }) {
         Text(label)
+    }
+}
+@Composable
+fun WriteButton(context: Context) {
+    Button(
+        onClick = {
+            val intent = Intent(context, MainActivity5::class.java)
+            context.startActivity(intent)
+        },
+        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.write),
+            contentDescription = null,
+            modifier = Modifier.size(30.dp),
+        )
     }
 }
