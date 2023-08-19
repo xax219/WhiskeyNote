@@ -213,8 +213,10 @@ fun BlendedCard(Blended: Blended, db: AppDatabase) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.CenterHorizontally),
-                            colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,unfocusedIndicatorColor = Color.Transparent
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             )
 
                         )

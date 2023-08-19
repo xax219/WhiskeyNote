@@ -36,20 +36,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Whiskey2Theme {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TopBar()
-                    Spacer(modifier = Modifier.height(300.dp))
-                    ButtonRow()
-                }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                TopBar()
+                Spacer(modifier = Modifier.height(300.dp))
+                ButtonRow()
             }
         }
     }
 }
+
 @Composable
 fun TopBar() {
     Box(
@@ -87,21 +86,30 @@ fun ButtonRow() {
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        NavigationButton("SingleMalt", MainActivity2::class.java, context)
-        NavigationButton("Blended", MainActivity3::class.java, context)
-        NavigationButton("Bourbon", MainActivity4::class.java, context)
+        NavigationButton("Single Malt\n       List", MainActivity2::class.java, context)
+        NavigationButton("Blended\n    List", MainActivity3::class.java, context)
+        NavigationButton("Bourbon\n    List", MainActivity4::class.java, context)
     }
 }
 
 @Composable
 fun NavigationButton(label: String, destination: Class<*>, context: Context) {
-    Button(onClick = {
-        val intent = Intent(context, destination)
-        context.startActivity(intent)
-    }) {
-        Text(label)
+    Button(
+        onClick = {
+            val intent = Intent(context, destination)
+            context.startActivity(intent)
+        },
+        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+    ) {
+        Text(
+            text = label,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
+
+
 @Composable
 fun WriteButton(context: Context) {
     Button(
