@@ -1,5 +1,6 @@
 package com.example.whiskey2
 
+
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -11,10 +12,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,11 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.whiskey2.data.AppDatabase
+import com.example.whiskey2.data.ParcelableSingleMalt
 import com.example.whiskey2.data.SingleMalt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity2 : ComponentActivity() {
+class SingleMaltList : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -57,12 +57,24 @@ class MainActivity2 : ComponentActivity() {
 
 @Composable
 fun SingleMaltList(singleMaltList: List<SingleMalt>, db: AppDatabase) {
+    val parcelableList = singleMaltList.map { singleMalt ->
+        ParcelableSingleMalt(
+            uid = singleMalt.uid,
+            name = singleMalt.name,
+            price = singleMalt.price,
+            year = singleMalt.year,
+            location = singleMalt.location,
+            tastingNote = singleMalt.tastingNote,
+            imageUri = singleMalt.imageUri
+        )
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(singleMaltList) { singleMalt ->
-            SingleMaltCard(singleMalt = singleMalt, db = db)
+            SingleMaltCard(singleMalt, db)
         }
     }
 }
@@ -79,9 +91,25 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                val intent = Intent(context, DetailPage::class.java).apply {
+                    putExtra(
+                        "singleMalt", ParcelableSingleMalt(
+                            name = singleMalt.name,
+                            price = singleMalt.price ?: 0,
+                            year = singleMalt.year,
+                            location = singleMalt.location,
+                            tastingNote = singleMalt.tastingNote,
+                            imageUri = singleMalt.imageUri
+
+                        )
+                    )
+                }
+                context.startActivity(intent)
+            },
         colors = cardColors,
-        shape = squareShape
+        shape = squareShape,
     ) {
         var isEditing by remember { mutableStateOf(false) }
         var editedName by remember { mutableStateOf(singleMalt.name) }
@@ -95,14 +123,15 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent()
         ) { uri ->
-            selectedUri = uri
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            context.contentResolver.takePersistableUriPermission(uri!!, takeFlags)
-            scope.launch(Dispatchers.IO) {
-                db.singleMaltDAO().updateSingleMalt(singleMalt.copy(imageUri = uri.toString()))
+            if (uri != null) {
+                selectedUri = uri
+                val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(uri, takeFlags)
+                scope.launch(Dispatchers.IO) {
+                    db.singleMaltDAO().updateSingleMalt(singleMalt.copy(imageUri = uri.toString()))
+                }
             }
         }
-
         Column(
             modifier = Modifier.padding(16.dp)
         ) {

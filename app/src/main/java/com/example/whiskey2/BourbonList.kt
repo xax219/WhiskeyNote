@@ -57,7 +57,7 @@ import com.example.whiskey2.data.Bourbon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity4 : ComponentActivity() {
+class BourbonList : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -116,12 +116,15 @@ fun BourbonCard(Bourbon: Bourbon, db: AppDatabase) {
         }
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent()
+
         ) { uri ->
-            selectedUri = uri
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            context.contentResolver.takePersistableUriPermission(uri!!, takeFlags)
-            scope.launch(Dispatchers.IO) {
-                db.bourbonDAO().updateBourbon(Bourbon.copy(imageUri = uri.toString()))
+            if (uri != null) {
+                selectedUri = uri
+                val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(uri, takeFlags)
+                scope.launch(Dispatchers.IO) {
+                    db.bourbonDAO().updateBourbon(Bourbon.copy(imageUri = uri.toString()))
+                }
             }
         }
 

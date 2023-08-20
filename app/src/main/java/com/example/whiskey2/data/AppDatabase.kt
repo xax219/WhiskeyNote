@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-//[User::class, ] 여기서 , 로 나눠서 받음
 @Database(entities = [SingleMalt::class, Blended::class,Bourbon::class], version = 1 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun singleMaltDAO(): SingleMaltDAO
@@ -23,7 +22,6 @@ abstract class AppDatabase : RoomDatabase() {
                     context,
                     AppDatabase::class.java, "contacts.db"
                 ).addMigrations(
-//                    MIGRATION_0_1
                 ).build()
             }
         }

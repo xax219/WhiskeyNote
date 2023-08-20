@@ -1,9 +1,12 @@
 package com.example.whiskey2.data
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-//엔티티 3개 만들어음
+import kotlinx.android.parcel.Parcelize
+
+
 @Entity
 data class SingleMalt(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
@@ -25,3 +28,13 @@ data class SingleMalt(
         return SingleMalt(uid, name, price, year, location, tastingNote, imageUri)
     }
 }
+@Parcelize
+data class ParcelableSingleMalt(
+    val uid: Int = 0,
+    val name: String,
+    val price: Int? = null,
+    val year: Int,
+    val location: String,
+    val tastingNote: String,
+    val imageUri: String? = null
+) : Parcelable

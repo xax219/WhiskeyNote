@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -30,9 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.whiskey2.ui.theme.Whiskey2Theme
 
-class MainActivity : ComponentActivity() {
+class Homescreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -86,9 +84,9 @@ fun ButtonRow() {
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        NavigationButton("Single Malt\n       List", MainActivity2::class.java, context)
-        NavigationButton("Blended\n    List", MainActivity3::class.java, context)
-        NavigationButton("Bourbon\n    List", MainActivity4::class.java, context)
+        NavigationButton("Single Malt\n       List", SingleMaltList::class.java, context)
+        NavigationButton("Blended\n    List", BlendedList::class.java, context)
+        NavigationButton("Bourbon\n    List", BourbonList::class.java, context)
     }
 }
 
@@ -114,7 +112,7 @@ fun NavigationButton(label: String, destination: Class<*>, context: Context) {
 fun WriteButton(context: Context) {
     Button(
         onClick = {
-            val intent = Intent(context, MainActivity5::class.java)
+            val intent = Intent(context, Addwhisky::class.java)
             context.startActivity(intent)
         },
         colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))

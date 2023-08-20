@@ -57,7 +57,7 @@ import com.example.whiskey2.data.Blended
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity3 : ComponentActivity() {
+class BlendedList : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -117,11 +117,13 @@ fun BlendedCard(Blended: Blended, db: AppDatabase) {
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent()
         ) { uri ->
-            selectedUri = uri
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            context.contentResolver.takePersistableUriPermission(uri!!, takeFlags)
-            scope.launch(Dispatchers.IO) {
-                db.blendedDAO().updateBlended(Blended.copy(imageUri = uri.toString()))
+            if (uri != null) {
+                selectedUri = uri
+                val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(uri, takeFlags)
+                scope.launch(Dispatchers.IO) {
+                    db.blendedDAO().updateBlended(Blended.copy(imageUri = uri.toString()))
+                }
             }
         }
 

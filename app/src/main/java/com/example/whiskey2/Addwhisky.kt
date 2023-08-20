@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -57,7 +59,8 @@ import com.example.whiskey2.data.Bourbon
 import com.example.whiskey2.data.SingleMalt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-class MainActivity5 : ComponentActivity() {
+
+class Addwhisky : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -77,10 +80,12 @@ class MainActivity5 : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun Save(modifier: Modifier = Modifier) {
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(15.dp),
+                .padding(15.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
@@ -258,7 +263,7 @@ class MainActivity5 : ComponentActivity() {
                             }
                         }
 
-                        val intent = Intent(context, MainActivity::class.java)
+                        val intent = Intent(context, Homescreen::class.java)
                         startActivity(intent)
                     },
                     modifier = Modifier
