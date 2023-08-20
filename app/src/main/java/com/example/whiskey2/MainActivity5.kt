@@ -57,7 +57,6 @@ import com.example.whiskey2.data.Bourbon
 import com.example.whiskey2.data.SingleMalt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 class MainActivity5 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -122,7 +122,7 @@ fun WriteButton(context: Context) {
         Image(
             painter = painterResource(id = R.drawable.write),
             contentDescription = null,
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(20.dp),
         )
     }
 }
