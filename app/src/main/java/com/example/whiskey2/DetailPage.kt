@@ -1,5 +1,6 @@
 package com.example.whiskey2
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.os.Bundle
@@ -17,14 +18,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 import com.example.whiskey2.data.ParcelableSingleMalt
 
@@ -34,7 +39,6 @@ class DetailPage : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val singleMalt = intent.getParcelableExtra<ParcelableSingleMalt>("singleMalt")
-
             if (singleMalt != null) {
                 DetailContent(singleMalt)
             }
@@ -45,13 +49,13 @@ class DetailPage : ComponentActivity() {
 @Composable
 fun DetailContent(singleMalt: ParcelableSingleMalt) {
     val imageUriString = singleMalt.imageUri
-    val scrollState = rememberScrollState()
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .height(75.dp)
+            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
     ) {
         val defaultImagePainter = painterResource(id = R.drawable.defaultimage)
 
@@ -73,49 +77,104 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
         } else {
             null
         }
-
-        Image(
-            painter = if (imageBitmap != null) BitmapPainter(imageBitmap) else defaultImagePainter,
-            contentDescription = "",
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .background(Color.Red)
-        )
+                .height(100.dp)
+                .padding(end = (20.dp))
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.listlogo2),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .align(Alignment.CenterEnd)
+                    .clickable(onClick = {
+                        val intent = Intent(context, Homescreen::class.java)
+                        context.startActivity(intent)
+                    })
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 60.dp)
+        ) {
+            val cardSize = 300.dp
+            val imageModifier = Modifier
+                .fillMaxSize()
+                .background(Color.Blue)
+
+            Card(
+                modifier = Modifier.size(cardSize),
+            ) {
+                Image(
+                    painter = if (imageBitmap != null) BitmapPainter(imageBitmap) else defaultImagePainter,
+                    contentDescription = "",
+                    modifier = imageModifier
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(60.dp))
 
         Column(
-            modifier = Modifier
-                .verticalScroll(scrollState),
-        ) {
+            modifier = Modifier.padding(start = 55.dp)
+        )
+        {
             Text(
-                text = "Whisky Name : ${singleMalt.name}",
+                text = "Whisky information",
+                fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                fontSize = 30.sp,
+                color = Color.Black
             )
-            Spacer(modifier = Modifier.height(8.dp))
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Row()
+            {
+                Text(
+                    text = "Name \n${singleMalt.name}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.width(110.dp))
+
+                Text(
+                    text = "Price \n${singleMalt.price}",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Spacer(modifier = Modifier.height(30.dp))
+            Row {
+                Text(
+                    text = "Year \n${singleMalt.year}",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.width(122.dp))
+
+                Text(
+                    text = "Location \n${singleMalt.location}",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Spacer(modifier = Modifier.height(30.dp))
 
             Text(
-                text = "Price : ${singleMalt.price}",
+                text = "Tasting Note \n${singleMalt.tastingNote}",
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Year : ${singleMalt.year}",
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Location : ${singleMalt.location}",
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Tasting Note : ${singleMalt.tastingNote}",
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(top = 8.dp)
             )
         }
     }

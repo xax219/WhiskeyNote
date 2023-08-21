@@ -12,6 +12,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun singleMaltDAO(): SingleMaltDAO
     abstract fun blendedDAO(): BlendedDAO
     abstract fun bourbonDAO(): BourbonDAO
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

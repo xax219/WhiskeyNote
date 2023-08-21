@@ -68,7 +68,7 @@ fun TopBar() {
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 170.dp)
+                modifier = Modifier.padding(start = 175.dp)
             )
             WriteButton(LocalContext.current)
         }
