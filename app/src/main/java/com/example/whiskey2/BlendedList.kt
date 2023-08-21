@@ -49,11 +49,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.whiskey2.data.AppDatabase
 import com.example.whiskey2.data.Blended
+import com.example.whiskey2.data.ParcelableBlended
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -79,16 +81,27 @@ class BlendedList : ComponentActivity() {
 
 @Composable
 fun BlendedList(BlendedList: List<Blended>, db: AppDatabase) {
+    val parcelableList = BlendedList.map { blended ->
+        ParcelableBlended(
+            uid = blended.uid,
+            name = blended.name,
+            price = blended.price,
+            year = blended.year,
+            location = blended.location,
+            tastingNote = blended.tastingNote,
+            imageUri = blended.imageUri
+        )
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(BlendedList) { Blended ->
-            BlendedCard(Blended = Blended, db = db)
+        items(BlendedList) { blended ->
+            BlendedCard(blended, db)
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlendedCard(Blended: Blended, db: AppDatabase) {
@@ -101,7 +114,24 @@ fun BlendedCard(Blended: Blended, db: AppDatabase) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 5.dp)
+            .clickable {
+                val intent = Intent(context, BlendedDetail::class.java).apply {
+                    putExtra(
+                        "blended", ParcelableBlended(
+                            name = Blended.name,
+                            price = Blended.price ?: 0,
+                            year = Blended.year,
+                            location = Blended.location,
+                            tastingNote = Blended.tastingNote,
+                            imageUri = Blended.imageUri
+
+                        )
+                    )
+                }
+                context.startActivity(intent)
+            },
         colors = cardColors,
         shape = squareShape
     ) {
@@ -257,12 +287,12 @@ fun BlendedCard(Blended: Blended, db: AppDatabase) {
                     modifier = Modifier
                         .padding(4.dp)
                         .width(IntrinsicSize.Max),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
                 ) {
                     if (isEditing) {
-                        Text(text = "Save", color = MaterialTheme.colorScheme.onPrimary)
+                        Text(text = "Save", color = Color.Black)
                     } else {
-                        Text(text = "Edit", color = MaterialTheme.colorScheme.onPrimary)
+                        Text(text = "Edit", color = Color.Black)
                     }
                 }
 
@@ -274,9 +304,9 @@ fun BlendedCard(Blended: Blended, db: AppDatabase) {
                         }
                     },
                     modifier = Modifier.padding(4.dp),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
                 ) {
-                    Text(text = "Delete", color = MaterialTheme.colorScheme.onPrimary)
+                    Text(text = "Delete", color = Color.Black)
                 }
             }
         }
@@ -290,12 +320,13 @@ fun Blend() {
         modifier = Modifier
             .fillMaxWidth()
             .height(75.dp)
-            .background(Color(android.graphics.Color.parseColor("#1EA4FF"))),
+            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Blended Whiskey",
-            color = Color.White,
+            fontStyle = FontStyle.Italic,
+            color = Color.Black,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(8.dp)

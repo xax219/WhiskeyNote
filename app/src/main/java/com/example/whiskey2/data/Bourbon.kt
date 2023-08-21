@@ -1,8 +1,11 @@
 package com.example.whiskey2.data
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
+
 //엔티티 3개 만들어음
 @Entity
 data class Bourbon(
@@ -25,3 +28,13 @@ data class Bourbon(
         return Bourbon(uid, name, price, year, location, tastingNote, imageUri)
     }
 }
+@Parcelize
+data class ParcelableBourbon(
+    val uid: Int = 0,
+    val name: String,
+    val price: Int? = null,
+    val year: Int,
+    val location: String,
+    val tastingNote: String,
+    val imageUri: String? = null
+) : Parcelable

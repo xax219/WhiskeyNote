@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,7 @@ fun TopBar() {
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .background(Color(android.graphics.Color.parseColor("#1EA4FF"))),
+            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -65,9 +66,10 @@ fun TopBar() {
         ) {
             Text(
                 text = "Whiskey",
-                color = Color.White,
+                color = Color.Black,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic,
                 modifier = Modifier.padding(start = 175.dp)
             )
             WriteButton(LocalContext.current)
@@ -97,11 +99,11 @@ fun NavigationButton(label: String, destination: Class<*>, context: Context) {
             val intent = Intent(context, destination)
             context.startActivity(intent)
         },
-        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
     ) {
         Text(
             text = label,
-            color = Color.White,
+            color = Color.Black,
             fontWeight = FontWeight.Bold
         )
     }
@@ -115,7 +117,7 @@ fun WriteButton(context: Context) {
             val intent = Intent(context, Addwhisky::class.java)
             context.startActivity(intent)
         },
-        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
     ) {
         Image(
             painter = painterResource(id = R.drawable.write),

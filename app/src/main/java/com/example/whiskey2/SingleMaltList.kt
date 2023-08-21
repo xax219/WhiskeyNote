@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -92,8 +93,9 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 5.dp)
             .clickable {
-                val intent = Intent(context, DetailPage::class.java).apply {
+                val intent = Intent(context, SingleMaltDetail::class.java).apply {
                     putExtra(
                         "singleMalt", ParcelableSingleMalt(
                             name = singleMalt.name,
@@ -262,12 +264,12 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
                     modifier = Modifier
                         .padding(4.dp)
                         .width(IntrinsicSize.Max),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
                 ) {
                     if (isEditing) {
-                        Text(text = "Save", color = MaterialTheme.colorScheme.onPrimary)
+                        Text(text = "Save", color = Color.Black)
                     } else {
-                        Text(text = "Edit", color = MaterialTheme.colorScheme.onPrimary)
+                        Text(text = "Edit", color = Color.Black)
                     }
                 }
 
@@ -279,9 +281,9 @@ fun SingleMaltCard(singleMalt: SingleMalt, db: AppDatabase) {
                         }
                     },
                     modifier = Modifier.padding(4.dp),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
                 ) {
-                    Text(text = "Delete", color = MaterialTheme.colorScheme.onPrimary)
+                    Text(text = "Delete", color = Color.Black)
                 }
             }
         }
@@ -295,12 +297,13 @@ fun Single() {
         modifier = Modifier
             .fillMaxWidth()
             .height(75.dp)
-            .background(Color(android.graphics.Color.parseColor("#1EA4FF"))),
+            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Single Malt Whiskey",
-            color = androidx.compose.ui.graphics.Color.White,
+            fontStyle = FontStyle.Italic,
+            color = androidx.compose.ui.graphics.Color.Black,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(8.dp)

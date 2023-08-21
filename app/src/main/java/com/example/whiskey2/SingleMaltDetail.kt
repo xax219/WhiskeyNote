@@ -16,8 +16,6 @@ import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -26,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.whiskey2.data.ParcelableSingleMalt
 
 
-class DetailPage : ComponentActivity() {
+class SingleMaltDetail : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -72,7 +69,7 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
                 MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
             }
 
-            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true)
+            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 3000, 3000, true)
             scaledBitmap.asImageBitmap()
         } else {
             null
@@ -90,7 +87,7 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
                     .size(40.dp)
                     .align(Alignment.CenterEnd)
                     .clickable(onClick = {
-                        val intent = Intent(context, Homescreen::class.java)
+                        val intent = Intent(context, SingleMaltList::class.java)
                         context.startActivity(intent)
                     })
             )
@@ -105,7 +102,7 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
             val cardSize = 300.dp
             val imageModifier = Modifier
                 .fillMaxSize()
-                .background(Color.Blue)
+                .background(Color(android.graphics.Color.parseColor("#F8E7C9")))
 
             Card(
                 modifier = Modifier.size(cardSize),
@@ -136,46 +133,72 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
 
             Row()
             {
-                Text(
-                    text = "Name \n${singleMalt.name}",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.width(110.dp))
-
-                Text(
-                    text = "Price \n${singleMalt.price}",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Box(modifier = Modifier
+                    .width(120.dp)
+                    .height(70.dp)
+                    ) {
+                    Text(
+                        text = "Name \n${singleMalt.name}",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                Spacer(modifier = Modifier.width(40.dp))
+                Box(modifier = Modifier
+                    .width(120.dp)
+                    .height(70.dp)
+                    ) {
+                    Text(
+                        text = "Price \n${singleMalt.price}",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(30.dp))
             Row {
-                Text(
-                    text = "Year \n${singleMalt.year}",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.width(122.dp))
+                Box(modifier = Modifier
+                    .width(120.dp)
+                    .height(70.dp)
+                    ) {
+                    Text(
+                        text = "Year \n${singleMalt.year}",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                Spacer(modifier = Modifier.width(40.dp))
+                Box (modifier = Modifier
+                    .width(120.dp)
+                    .height(70.dp)
+                    ) {
+
+                    Text(
+                        text = "Location \n${singleMalt.location}",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Box  (modifier = Modifier
+                .width(280.dp)
+                .height(70.dp)
+                ) {
 
                 Text(
-                    text = "Location \n${singleMalt.location}",
+                    text = "Tasting Note \n${singleMalt.tastingNote}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Text(
-                text = "Tasting Note \n${singleMalt.tastingNote}",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
         }
     }
 }
+

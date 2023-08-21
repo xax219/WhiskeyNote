@@ -269,7 +269,7 @@ class Addwhisky : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RectangleShape),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#1EA4FF")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
 
                 ) {
                     Text(
