@@ -53,8 +53,8 @@ fun TopBar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
-            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
+            .height(75.dp)
+            .background(Color(android.graphics.Color.parseColor("#FCF4E7"))),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -65,12 +65,12 @@ fun TopBar() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Whiskey",
+                text = "Whiskey Note",
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic,
-                modifier = Modifier.padding(start = 175.dp)
+                modifier = Modifier.padding(start = 160.dp)
             )
             WriteButton(LocalContext.current)
         }
@@ -99,7 +99,7 @@ fun NavigationButton(label: String, destination: Class<*>, context: Context) {
             val intent = Intent(context, destination)
             context.startActivity(intent)
         },
-        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
+        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#FCF4E7")))
     ) {
         Text(
             text = label,
@@ -114,10 +114,10 @@ fun NavigationButton(label: String, destination: Class<*>, context: Context) {
 fun WriteButton(context: Context) {
     Button(
         onClick = {
-            val intent = Intent(context, Addwhisky::class.java)
+            val intent = Intent(context, Addwhiskey::class.java)
             context.startActivity(intent)
         },
-        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
+        colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#FCF4E7")))
     ) {
         Image(
             painter = painterResource(id = R.drawable.write),

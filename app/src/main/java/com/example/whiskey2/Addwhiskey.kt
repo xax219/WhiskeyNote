@@ -60,7 +60,7 @@ import com.example.whiskey2.data.SingleMalt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class Addwhisky : ComponentActivity() {
+class Addwhiskey : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -103,7 +103,7 @@ class Addwhisky : ComponentActivity() {
                     context.contentResolver.takePersistableUriPermission(uri, takeFlags)
                 }
             }
-            var whiskyName by remember { mutableStateOf(TextFieldValue()) }
+            var whiskeyName by remember { mutableStateOf(TextFieldValue()) }
             var enteredName by remember { mutableStateOf("") }
             var price by remember { mutableStateOf(TextFieldValue()) }
             var enteredPrice by remember { mutableStateOf("") }
@@ -176,9 +176,9 @@ class Addwhisky : ComponentActivity() {
                 DropDownMenu(selectedItem, onChangeItem = { selectedItem = it })
 
                 TextField(
-                    value = whiskyName,
-                    onValueChange = { whiskyName = it },
-                    label = { Text("Whisky Name") },
+                    value = whiskeyName,
+                    onValueChange = { whiskeyName = it },
+                    label = { Text("Whiskey Name") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
 
@@ -222,7 +222,7 @@ class Addwhisky : ComponentActivity() {
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        enteredName = whiskyName.text
+                        enteredName = whiskeyName.text
                         enteredPrice = price.text
                         enteredYear = year.text
                         enteredLocation = location.text
@@ -269,11 +269,12 @@ class Addwhisky : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RectangleShape),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#FCF4E7")))
 
                 ) {
                     Text(
                         text = "Save",
+                        color = Color.Black,
                         fontSize = 24.sp,
                     )
                 }
@@ -302,7 +303,7 @@ fun DropDownMenu(selectedItem: String, onChangeItem: (String) -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
-                label = { Text(text = "Select Whisky") },
+                label = { Text(text = "Select Whiskey") },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 }

@@ -200,7 +200,7 @@ fun BourbonCard(Bourbon: Bourbon, db: AppDatabase) {
                         TextField(
                             value = editedName,
                             onValueChange = { editedName = it },
-                            label = { Text("Whisky Name") },
+                            label = { Text("Whiskey Name") },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.CenterHorizontally),
@@ -255,7 +255,7 @@ fun BourbonCard(Bourbon: Bourbon, db: AppDatabase) {
 
                         )
                     } else {
-                        Text(text = "Whisky Name: ${if (editedName.isEmpty()) Bourbon.name else editedName}")
+                        Text(text = "Whiskey Name: ${if (editedName.isEmpty()) Bourbon.name else editedName}")
                         Text(text = "Price: ${if (editedPrice.isEmpty()) Bourbon.price else editedPrice}")
                         Text(text = "Year: ${if (editedYear.isEmpty()) Bourbon.year else editedYear}")
                         Text(text = "Location: ${if (editedLocation.isEmpty()) Bourbon.location else editedLocation}")
@@ -285,11 +285,11 @@ fun BourbonCard(Bourbon: Bourbon, db: AppDatabase) {
                             }
                         }
                         isEditing = !isEditing
-                              },
+                    },
                     modifier = Modifier
                         .padding(4.dp)
                         .width(IntrinsicSize.Max),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#FCF4E7")))
                 ) {
                     if (isEditing) {
                         Text(text = "Save", color = Color.Black)
@@ -306,7 +306,7 @@ fun BourbonCard(Bourbon: Bourbon, db: AppDatabase) {
                         }
                     },
                     modifier = Modifier.padding(4.dp),
-                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#F8E7C9")))
+                    colors = ButtonDefaults.buttonColors(Color(android.graphics.Color.parseColor("#FCF4E7")))
                 ) {
                     Text(text = "Delete", color = Color.Black)
                 }
@@ -322,7 +322,7 @@ fun Bourbon() {
         modifier = Modifier
             .fillMaxWidth()
             .height(75.dp)
-            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
+            .background(Color(android.graphics.Color.parseColor("#FCF4E7"))),
         contentAlignment = Alignment.Center
     ) {
         Text(

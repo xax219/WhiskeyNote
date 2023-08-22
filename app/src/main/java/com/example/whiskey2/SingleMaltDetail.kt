@@ -52,7 +52,7 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
         modifier = Modifier
             .fillMaxSize()
             .height(75.dp)
-            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
+            .background(Color(android.graphics.Color.parseColor("#FCF4E7"))),
     ) {
         val defaultImagePainter = painterResource(id = R.drawable.defaultimage)
 
@@ -97,12 +97,12 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 60.dp)
+                .padding(start = 56.dp)
         ) {
             val cardSize = 300.dp
             val imageModifier = Modifier
                 .fillMaxSize()
-                .background(Color(android.graphics.Color.parseColor("#F8E7C9")))
+                .background(Color(android.graphics.Color.parseColor("#FCF4E7")))
 
             Card(
                 modifier = Modifier.size(cardSize),
@@ -122,7 +122,7 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
         )
         {
             Text(
-                text = "Whisky information",
+                text = "whiskey information",
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
@@ -133,10 +133,11 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
 
             Row()
             {
-                Box(modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
                     Text(
                         text = "Name \n${singleMalt.name}",
                         fontWeight = FontWeight.Bold,
@@ -145,10 +146,11 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
                     )
                 }
                 Spacer(modifier = Modifier.width(40.dp))
-                Box(modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
                     Text(
                         text = "Price \n${singleMalt.price}",
                         fontWeight = FontWeight.SemiBold,
@@ -159,10 +161,11 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
             }
             Spacer(modifier = Modifier.height(30.dp))
             Row {
-                Box(modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
                     Text(
                         text = "Year \n${singleMalt.year}",
                         fontWeight = FontWeight.SemiBold,
@@ -171,10 +174,11 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
                     )
                 }
                 Spacer(modifier = Modifier.width(40.dp))
-                Box (modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
 
                     Text(
                         text = "Location \n${singleMalt.location}",
@@ -186,10 +190,11 @@ fun DetailContent(singleMalt: ParcelableSingleMalt) {
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Box  (modifier = Modifier
-                .width(280.dp)
-                .height(70.dp)
-                ) {
+            Box(
+                modifier = Modifier
+                    .width(280.dp)
+                    .height(70.dp)
+            ) {
 
                 Text(
                     text = "Tasting Note \n${singleMalt.tastingNote}",

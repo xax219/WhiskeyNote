@@ -53,7 +53,7 @@ fun DetailContent2(blended: ParcelableBlended) {
         modifier = Modifier
             .fillMaxSize()
             .height(75.dp)
-            .background(Color(android.graphics.Color.parseColor("#F8E7C9"))),
+            .background(Color(android.graphics.Color.parseColor("#FCF4E7"))),
     ) {
         val defaultImagePainter = painterResource(id = R.drawable.defaultimage)
 
@@ -98,12 +98,12 @@ fun DetailContent2(blended: ParcelableBlended) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 60.dp)
+                .padding(start = 56.dp)
         ) {
             val cardSize = 300.dp
             val imageModifier = Modifier
                 .fillMaxSize()
-                .background(Color(android.graphics.Color.parseColor("#F8E7C9")))
+                .background(Color(android.graphics.Color.parseColor("#FCF4E7")))
 
             Card(
                 modifier = Modifier.size(cardSize),
@@ -123,7 +123,7 @@ fun DetailContent2(blended: ParcelableBlended) {
         )
         {
             Text(
-                text = "Whisky information",
+                text = "Whiskey information",
                 fontStyle = FontStyle.Italic,
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
@@ -134,10 +134,11 @@ fun DetailContent2(blended: ParcelableBlended) {
 
             Row()
             {
-                Box(modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
                     Text(
                         text = "Name \n${blended.name}",
                         fontWeight = FontWeight.Bold,
@@ -146,10 +147,11 @@ fun DetailContent2(blended: ParcelableBlended) {
                     )
                 }
                 Spacer(modifier = Modifier.width(40.dp))
-                Box(modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
                     Text(
                         text = "Price \n${blended.price}",
                         fontWeight = FontWeight.SemiBold,
@@ -160,10 +162,11 @@ fun DetailContent2(blended: ParcelableBlended) {
             }
             Spacer(modifier = Modifier.height(30.dp))
             Row {
-                Box(modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
                     Text(
                         text = "Year \n${blended.year}",
                         fontWeight = FontWeight.SemiBold,
@@ -172,10 +175,11 @@ fun DetailContent2(blended: ParcelableBlended) {
                     )
                 }
                 Spacer(modifier = Modifier.width(40.dp))
-                Box (modifier = Modifier
-                    .width(120.dp)
-                    .height(70.dp)
-                    ) {
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(70.dp)
+                ) {
 
                     Text(
                         text = "Location \n${blended.location}",
@@ -187,10 +191,11 @@ fun DetailContent2(blended: ParcelableBlended) {
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Box  (modifier = Modifier
-                .width(280.dp)
-                .height(70.dp)
-                ) {
+            Box(
+                modifier = Modifier
+                    .width(280.dp)
+                    .height(70.dp)
+            ) {
 
                 Text(
                     text = "Tasting Note \n${blended.tastingNote}",
